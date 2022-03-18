@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href= "css/style.css" rel="stylesheet"/>
+    <title>Register</title>
+</head>
+<body>
+    <div class="registration">
+        <h1>Register Account
+        </h1>
+        <form action=registration method="POST">
+            <input type="text" name="username" placeholder="Username" required="required">
+            <div class="error-messages">
+                <p>
+                    <%=message%>
+                </p>
+                </div>
+            <input type="text" name="first_name" placeholder="First Name" required="required">
+            <input type="text" name="last_name" placeholder="Last Name" require="required">
+            <input type="password" name="password" placeholder="Password" required="required">
+            <button type="registration" class="btn btn-primary btn-block btn-large">Register</button>
+            
+        </form>
+    </div>
+    
+</body>
+</html>
