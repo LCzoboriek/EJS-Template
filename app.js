@@ -7,6 +7,7 @@ const path = require('path');
 const { table } = require('console');
 const user = require('./user.js');
 const { get } = require('express/lib/response');
+const res = require('express/lib/response');
 let myUser = new user;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(body_parser.urlencoded({extended: false}));
@@ -14,6 +15,10 @@ app.use(body_parser.json());
 
 app.set('views','views'); // Path to where my views are located
 app.set('view engine','ejs'); // Using a view engine and what one you are using
+
+app.get('/admin', (req, res) => {
+    adminLogin(req, res)
+})
 
 app.get('/', (req, res) => {
     res.render('login', {message: ''})
@@ -31,9 +36,35 @@ app.post('/login', (req, res, next) => {
     checkUsername(req.body, res);
 })
 
+app.post('/makeadmin', (req, res) => {
+    makeAdmin(req.body, req, res);//req.body cause we are taking parameters in
+})
+
+app.post('/removeadmin', (req, res) => {
+    demoteAdmin(req.body, req, res);//req.body cause we are taking parameters in
+})
+
+app.post('/deleteuser', (req, res) => {
+    deleteUser(req.body, req, res)
+})
+
+app.post('/registration', (req, res, next) =>{
+    processRegistration(req.body, res);
+})
+
+app.get('/testdb', (req, res) => {
+    getData(req,res);
+})
+
+app.listen(4000, () => {
+    console.log('Listening on port 4000');
+});
+
 function processEditProfile(params, res){
     res.render('editprofile', {username: myUser.getusername, password: myUser.getpassword})
 }
+
+
 
 function checkUsername(params, res) {
     let username = params.username;
@@ -90,9 +121,19 @@ function validatePassword(params, res) {
         })
 }
 
-app.post('/registration', (req, res, next) =>{
-    processRegistration(req.body, res);
-})
+function changePassword(params, res){
+    let isLoggedIn = checkLoggedIn();
+    if (isLoggedIn != true){
+        res.render('login', {message: ""})
+    } else {
+    let userName = myUser.getusername;
+    let password = myUser.password;
+    let newPassword = params.password;
+    let columnName = 'user_name'
+    let tableName = 'test_table'
+    let myQuery = ``
+    }
+}
 
 function processRegistration(params, res){
     let userName = params.username;
@@ -113,12 +154,71 @@ function processRegistration(params, res){
         }
 )}
 
+function checkLoggedIn(){
+    if(myUser.getid || myUser.getusername == ''){
+        return false
+    } else {
+        return true
+    }
+}
 
-app.get('/testdb', (req, res) => {
-    getData(req,res);
-})
+function adminLogin(req, res){
+    let tableName = 'test_table'
+    let myQuery = `SELECT * FROM ${tableName}`
+    client.query(myQuery,
+        (error, result) => {
+            if(error){
+                console.log(error);
+                res.status(500).send(error);
+            } else {
+                let data = result.rows;
+                console.table(data);
+                res.render('admin', {data});
+            }
+        })
+}
 
-app.listen(4000, () => {
-    console.log('Listening on port 4000');
-});
+function makeAdmin(params, req, res){
+    let id = params.hiddenAdminId;
+    let tableName = 'test_table'
+    let myQuery = `UPDATE ${tableName} SET isadmin = 'Y' WHERE id = ${id}`;
+    client.query(myQuery,
+        (error, result) => {
+            if(error){
+                console.log(error);
+                res.status(500).send(error);
+            } else {
+                adminLogin(req, res);
+            }
+        })
+}
 
+function demoteAdmin(params, req, res){
+    let id = params.hiddenRemoveAdminId;
+    let tableName = 'test_table'
+    let myQuery = `UPDATE ${tableName} SET isadmin = 'N' WHERE id = ${id}`;
+    client.query(myQuery,
+        (error, result) => {
+            if(error){
+                console.log(error);
+                res.status(500).send(error);
+            } else {
+                adminLogin(req, res);
+            }
+        })
+}
+
+function deleteUser(params, req, res){
+    let id = params.hiddenId;
+    let tableName = 'test_table'
+    let myQuery = `DELETE FROM ${tableName} WHERE id = ${id}`;
+    client.query(myQuery,
+        (error, result) => {
+            if(error){
+                console.log(error);
+                res.status(500).send(error);
+            } else {
+                adminLogin(req, res);
+            }
+        })
+}
