@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href= "css/styles-edit.css" rel="stylesheet"/>
+</head>
+<body>
+    <ul>
+        <li>Home</li>
+        <li>Admin</li>
+        <li>Profile</li>
+        <li>Logout</li>
+    </ul>
+    <div class="edit">
+    <form action=editprofile method="POST">
+        <h1>Edit Profile</h1>
+    <h2>Username: <%=username%></h2>
+    <h2>Password: </h2>
+    <input type="password"
+    class="password"
+    id="password"
+    name="password">
+    <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
+    </form>
+    </div>
+</body>
+</html>
+
+<!-- do app .post, check if the password being entered matches the same, just render the profile page
+check if submit password matches the password already set, if it doesnt update the password
+hide edit profile if no ones logged in, redirect to login, get update password working, set everything
+to blank strings for logout, res render login page again -->

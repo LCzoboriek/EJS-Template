@@ -619,3 +619,31 @@ body{
   .pikachu .mouth::after{
 	left: 50%;
   }
+
+  .Welcome {
+	  position: absolute;
+	  top: 0%;
+	  left: 0%
+  }
+
+  .tab-bar {
+	  position: absolute;
+	  top: 0%;
+	  right: 0%;
+	  color:rgba(255, 255, 255, 0.75)
+  }
+
+  .nav-bar ul {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	background-color: #092756;
+}
+
+.nav-bar li {
+	color: white;
+	list-style-type: none;
+	float: left;
+	padding: 14px 16px;
+	background: linear-gradient(45deg, rgba(204, 168, 224, 0.2), rgba(187, 154, 230, 0.2));
+}

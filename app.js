@@ -5,6 +5,9 @@ const http = require('http');
 const body_parser = require('body-parser');
 const path = require('path');
 const { table } = require('console');
+const user = require('./user.js');
+const { get } = require('express/lib/response');
+let myUser = new user;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(body_parser.urlencoded({extended: false}));
 app.use(body_parser.json());
@@ -16,6 +19,10 @@ app.get('/', (req, res) => {
     res.render('login', {message: ''})
 })
 
+app.get('/editprofile', (req, res)=>{
+    processEditProfile(req, res)
+})
+
 app.post('/register', (req, res) => {
     res.render('registration', {message: ''})
 })
@@ -24,19 +31,25 @@ app.post('/login', (req, res, next) => {
     checkUsername(req.body, res);
 })
 
+function processEditProfile(params, res){
+    res.render('editprofile', {username: myUser.getusername, password: myUser.getpassword})
+}
+
 function checkUsername(params, res) {
     let username = params.username;
     let userExists = false;
     let tableName = 'test_table';
     let columnName = 'user_name';
     let myQuery = `SELECT ${columnName} FROM "${tableName}"`;
+    console.log(myQuery);
     client.query(myQuery, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             for(let i = 0; i < result.rows.length; i++){
-                if (result.rows[i].username === username) {
+                if (result.rows[i].user_name === username) {
                     userExists = true;
+                    myUser.setusername = result.rows[i].user_name
                     validatePassword(params, res);
                     break;
                 }
@@ -54,7 +67,7 @@ function validatePassword(params, res) {
     console.log(userName + password);
     let tableName = 'test_table';
     let columnName = 'user_name';
-    let myQuery = `SELECT password FROM "${tableName}" WHERE ${columnName} = '${userName}'`;
+    let myQuery = `SELECT password, first_name, id, isadmin, last_name FROM "${tableName}" WHERE ${columnName} = '${userName}'`;
     console.log(myQuery);
     client.query(myQuery, 
         (error, result) => {
@@ -63,7 +76,13 @@ function validatePassword(params, res) {
             } else {
                 let dbpassword = result.rows[0].password;
                 if(dbpassword === password){
-                    res.render('welcome');
+                    myUser.setid = result.rows[0].id;
+                    myUser.setfirstname = result.rows[0].first_name;
+                    myUser.setlastname = result.rows[0].last_name;
+                    myUser.setisadmin = result.rows[0].isadmin;
+                    myUser.setpassword = dbpassword;
+                    console.table(myUser);
+                    res.render('welcome', {username: myUser.getfirstname, lastname: myUser.getlastname});
                 } else {
                     res.render('login',{message: 'Invalid username or password'});
                 }
@@ -89,7 +108,7 @@ function processRegistration(params, res){
         if(error){
             res.render('registration', {message: 'Username already exists!'})   
         } else {
-            res.render('login',{message: ""})
+            res.render('login',{message: "Account created succesfully"})
             }
         }
 )}

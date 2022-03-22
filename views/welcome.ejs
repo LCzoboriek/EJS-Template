@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href= "css/style-welcome.css" rel="stylesheet"/>
     <title>Welcome</title>
 </head>
 <body>
-    <h1>Welcome!</h1>
+    <div class="nav-bar">
+    <ul>
+        <li>Home</li>
+        <li>Admin</li>
+        <li>Profile</li>
+        <li>Logout</li>
+    </ul>
+    </div> 
+    </br>
+    </br>
+    </br>
+    <div class="login">
+        <h1>Welcome <%=username%> <%=lastname%> </h1>
+        
+        <div class="btn-toolbar-editprofile"></div> 
+        
+        <form action=admin method="GET">
+            <button type="admin" class="btn btn-primary btn-block btn-large">Admin</button>
+        </form>
+        <form action=editprofile method="GET">
+            <button type="edit-profile" class="btn btn-primary btn-block btn-large">Edit Profile</button>
+        </form>
+        <form action="logout" method="GET">  
+            <button type="logout" class="btn btn-primary btn-block btn-large">Log Out</button>
+        </form>  
+        </div>   
+            <p>
+   
+            </p> 
+        </form>
+    </div>
+</div>
 </body>
 </html>
