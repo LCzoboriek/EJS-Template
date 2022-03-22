@@ -4,6 +4,7 @@ const client = require('./db.js');
 const http = require('http');
 const body_parser = require('body-parser');
 const path = require('path');
+const { table } = require('console');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(body_parser.urlencoded({extended: false}));
 app.use(body_parser.json());
@@ -20,10 +21,34 @@ app.post('/register', (req, res) => {
 })
 
 app.post('/login', (req, res, next) => {
-    processLogin(req.body, res);
+    checkUsername(req.body, res);
 })
 
-function processLogin(params, res) {
+function checkUsername(params, res) {
+    let username = params.username;
+    let userExists = false;
+    let tableName = 'test_table';
+    let columnName = 'user_name';
+    let myQuery = `SELECT ${columnName} FROM "${tableName}"`;
+    client.query(myQuery, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            for(let i = 0; i < result.rows.length; i++){
+                if (result.rows[i].username === username) {
+                    userExists = true;
+                    validatePassword(params, res);
+                    break;
+                }
+            }
+            if (!userExists) {
+                res.render('login', {message: 'Invalid username or password'})
+            }
+        }
+    })
+};
+
+function validatePassword(params, res) {
     let userName = params.username;
     let password = params.password;
     console.log(userName + password);
@@ -55,7 +80,6 @@ function processRegistration(params, res){
     let firstName = params.first_name;
     let lastName = params.last_name
     let password = params.password;
-    console.log(userName + password);
     let tableName = 'test_table';
     let myQuery = `INSERT INTO ${tableName}(
         first_name, last_name, password, user_name)
