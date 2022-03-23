@@ -19,7 +19,7 @@
                     table.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     let currentRow=$(this).closest("tr");
-                    let isAdmin=currentRow.find("td:eq(3)").html();
+                    let isAdmin=currentRow.find("td:eq(5)").html();
                     let id = currentRow.find("td:eq(0)").html();
                     let uname = currentRow.find("td:eq(1)").html();
                     document.getElementById('LblUsername').innerHTML = uname;
