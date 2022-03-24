@@ -24,7 +24,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/editprofile', (req, res)=>{
-    editProfile.processEditProfile(req, res, myUser)
+    editProfile.processEditProfile(req, res)
+})
+
+app.post('/editprofile', (req, res) => {
+    editProfile.changePassword(req.body, res)    
 })
 
 app.post('/register', (req, res) => {
@@ -60,13 +64,7 @@ app.listen(4000, () => {
 });
 
 
-function checkLoggedIn(){
-    if(myUser.getid || myUser.getusername == ''){
-        return false
-    } else {
-        return true
-    }
-}
+
 
 function adminLogin(req, res){
     let tableName = 'test_table'
