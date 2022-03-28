@@ -23,8 +23,7 @@ function validatePassword(params, res) {
                     myUser.setlastname = result.rows[0].last_name;
                     myUser.setisadmin = result.rows[0].isadmin;
                     myUser.setpassword = dbpassword;
-                    console.table(myUser);
-                    res.render('welcome', {firstname: myUser.getfirstname, lastname: myUser.getlastname});
+                    res.render('welcome', {firstname: myUser.getfirstname, lastname: myUser.getlastname, message: '', adminlink: myUser.getisadmin});
                 } else {
                     res.render('login',{message: 'Invalid username or password'});
                 }
@@ -56,8 +55,16 @@ function checkUsername(params, res) {
             }
         }
     })
-};
+}
+
+function showButton(){
+    if(myUser.getisadmin === 'Y'){
+        return true
+    } else {
+        return false
+    }
+}
 
 module.exports = {
-    validatePassword, checkUsername, myUser
+    validatePassword, checkUsername, showButton, myUser
 }

@@ -11,8 +11,10 @@ const res = require('express/lib/response');
 const restController = require('./restController');
 const registration = require('./registration');
 const editProfile = require('./editprofile');
+const adminPage = require('./admin');
 
 let myUser = new user;
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(body_parser.urlencoded({extended: false}));
 app.use(body_parser.json());
@@ -40,19 +42,19 @@ app.post('/login', (req, res, next) => {
 })
 
 app.get('/admin', (req, res) => {
-    adminLogin(req, res)
+    adminPage.adminLogin(req, res)
 })
 
 app.post('/makeadmin', (req, res) => {
-    makeAdmin(req.body, req, res);//req.body cause we are taking parameters in
+    adminPage.makeAdmin(req.body, req, res);//req.body cause we are taking parameters in
 })
 
 app.post('/removeadmin', (req, res) => {
-    demoteAdmin(req.body, req, res);//req.body cause we are taking parameters in
+    adminPage.demoteAdmin(req.body, req, res);//req.body cause we are taking parameters in
 })
 
 app.post('/deleteuser', (req, res) => {
-    deleteUser(req.body, req, res)
+    adminPage.deleteUser(req.body, req, res)
 })
 
 app.post('/registration', (req, res, next) =>{
@@ -66,63 +68,9 @@ app.listen(4000, () => {
 
 
 
-function adminLogin(req, res){
-    let tableName = 'test_table'
-    let myQuery = `SELECT * FROM ${tableName}`
-    client.query(myQuery,
-        (error, result) => {
-            if(error){
-                console.log(error);
-                res.status(500).send(error);
-            } else {
-                let data = result.rows;
-                console.table(data);
-                res.render('admin', {data});
-            }
-        })
-}
 
-function makeAdmin(params, req, res){
-    let id = params.hiddenAdminId;
-    let tableName = 'test_table'
-    let myQuery = `UPDATE ${tableName} SET isadmin = 'Y' WHERE id = ${id}`;
-    client.query(myQuery,
-        (error, result) => {
-            if(error){
-                console.log(error);
-                res.status(500).send(error);
-            } else {
-                adminLogin(req, res);
-            }
-        })
-}
 
-function demoteAdmin(params, req, res){
-    let id = params.hiddenRemoveAdminId;
-    let tableName = 'test_table'
-    let myQuery = `UPDATE ${tableName} SET isadmin = 'N' WHERE id = ${id}`;
-    client.query(myQuery,
-        (error, result) => {
-            if(error){
-                console.log(error);
-                res.status(500).send(error);
-            } else {
-                adminLogin(req, res);
-            }
-        })
-}
 
-function deleteUser(params, req, res){
-    let id = params.hiddenId;
-    let tableName = 'test_table'
-    let myQuery = `DELETE FROM ${tableName} WHERE id = ${id}`;
-    client.query(myQuery,
-        (error, result) => {
-            if(error){
-                console.log(error);
-                res.status(500).send(error);
-            } else {
-                adminLogin(req, res);
-            }
-        })
-}
+
+
+

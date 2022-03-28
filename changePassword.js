@@ -22,9 +22,13 @@ function changePassword(params, res){
                     console.log(error);
                     res.status(500).send(error)
                 } else {
-                    res.render('welcome', {username: myUser.getusername, lastname: myUser.getlastname})
+                    res.render('welcome', {username: myUser.getusername, lastname: myUser.getlastname, message: ''})
                 }
             })
     }
     }
+}
+
+module.exports = {
+    changePassword
 }

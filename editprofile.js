@@ -16,23 +16,16 @@ function checkLoggedIn(){
     } else {
         return true
     }
-    // if(myTest.myUser.getid || myTest.myUser.getusername == ''){
-    //     console.log('im now returning false on the check logged in function');
-    //     return false
-    // } else {
-    //     return true
-    // }
 }
 
 
 function changePassword(params, res){
     let isLoggedIn = checkLoggedIn();
     if (isLoggedIn != true){
-        res.render('login', {message: ""})
+        res.render('login', {message: "You're not logged in"})
     } else {
     let userName = myTest.myUser.getusername;
     let password = myTest.myUser.password;
-    let firstname = myTest.myUser.getfirstname;
     let newPassword = params.password;
     let columnName = 'user_name'
     let myQuery = `UPDATE public.test_table SET password='${newPassword}' WHERE ${columnName} = '${userName}'`;

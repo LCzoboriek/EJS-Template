@@ -20,23 +20,25 @@
     </br>
     </br>
     <div class="login">
-        <h1>Welcome <%=firstname%> <%=lastname%> </h1>
+        <h1>Welcome <%=firstname%> <%=lastname%></h1>
+        <input type="hidden" name="admin-button" id="admin-button" value="<%=adminlink%>">
         
         <div class="btn-toolbar-editprofile"></div> 
-        
-        <form action=admin method="GET">
+        <form action=admin id="admintoggle" method="GET">
             <button type="admin" class="btn btn-primary btn-block btn-large">Admin</button>
-        </form>
+        
+        </div>
         <form action=editprofile method="GET">
             <button type="edit-profile" class="btn btn-primary btn-block btn-large">Edit Profile</button>
         </form>
         <form action="logout" method="GET">  
             <button type="logout" class="btn btn-primary btn-block btn-large">Log Out</button>
-        </form>  
+        </form> 
+        <p>
+            <%=message%><!-- //Add message here -->
+        </p>  
         </div>   
-            <p>
-                <!-- //Add message here -->
-            </p> 
+            
         </form>
     </div>
 </div>
