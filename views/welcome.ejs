@@ -19,15 +19,12 @@
     </br>
     </br>
     </br>
+    <input type="hidden" name="admin-button" id="admin-button" value="<%=adminlink%>"/>
     <div class="login">
         <h1>Welcome <%=firstname%> <%=lastname%></h1>
-        <input type="hidden" name="admin-button" id="admin-button" value="<%=adminlink%>">
-        
-        <div class="btn-toolbar-editprofile"></div> 
         <form action=admin id="admintoggle" method="GET">
             <button type="admin" class="btn btn-primary btn-block btn-large">Admin</button>
-        
-        </div>
+        </form>
         <form action=editprofile method="GET">
             <button type="edit-profile" class="btn btn-primary btn-block btn-large">Edit Profile</button>
         </form>
@@ -35,12 +32,21 @@
             <button type="logout" class="btn btn-primary btn-block btn-large">Log Out</button>
         </form> 
         <p>
-            <%=message%><!-- //Add message here -->
-        </p>  
-        </div>   
-            
-        </form>
+            <%=message%>
+        </p>     
+        </div>  
+    </div>         
+    </form>
     </div>
 </div>
+
+<script>
+    let isadmin = document.getElementById('admin-button').value
+    if(isadmin === 'Y') {
+        document.getElementById('admintoggle').style.display = 'block'
+    } else {
+        document.getElementById('admintoggle').style.display = 'none'
+    }
+    </script>
 </body>
 </html>
